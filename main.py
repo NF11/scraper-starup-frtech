@@ -59,10 +59,10 @@ row_num = 0
 with open(csv, 'w') as f:
     f.write('nom, description, address, site, linkedin, twitter, facebook, année de lancement, employees, '
             'Growth stage, valorisation, funding, '
-            'founder/1/nom, founder/1/function, founder/1/linkedin,'
-            'founder/2/nom, founder/2/function, founder/2/linkedin,'
-            'founder/3/nom, founder/3/function, founder/3/linkedin,'
-            'founder/4/nom, founder/4/function, founder/4/linkedin,'
+            'founder/1/nom, founder/1/poste, founder/1/linkedin,'
+            'founder/2/nom, founder/2/poste, founder/2/linkedin,'
+            'founder/3/nom, founder/3/poste, founder/3/linkedin,'
+            'founder/4/nom, founder/4/poste, founder/4/linkedin,'
             '\n')
     rows_num = len(links)
     for row in links:
@@ -80,8 +80,8 @@ with open(csv, 'w') as f:
         utls = soup.find('div', class_='resource-urls company-tags__resource-urls')
         company_info = soup.find('div', class_='layout-container company-overview')
         date = company_info.find('div', class_='field launch-date').find('div', class_='description')
-        employee = company_info.find('div', class_='field employees').find('div', class_='description').find('a')
-        stage = company_info.find('div', class_='field growth-stage').find('div', class_='description').find('a')
+        employee = company_info.find('div', class_='field employees').find('div', class_='description')
+        stage = company_info.find('div', class_='field growth-stage').find('div', class_='description')
         value = company_info.find('div', class_='field firm-valuation').find('div', class_='description') \
             .find('span', class_='valuation__value') if company_info.find('div',
                                                                           class_='field firm-valuation') is not None else None
@@ -108,8 +108,8 @@ with open(csv, 'w') as f:
         description = " " if description is None else description.text
         site = " " if site is None else str(site['href'])
         date = " " if date is None else date.text
-        employee = " " if employee is None else employee.text
-        stage = " " if stage is None else stage.text
+        employee = " " if employee is None else employee.find('a').text
+        stage = " " if stage is None else stage.find('a').text
         value = " " if value is None else value.text
         funding = " " if funding is None else funding.find('tr').find_all('td')[1].find('span',
                                                                                         class_='tooltip-target').text
